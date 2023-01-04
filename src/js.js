@@ -1,0 +1,336 @@
+exports.minStr = (str1, str2) => {
+  if(!str1)
+    return str2;
+  if(!str2)
+    return str1;
+  return str1 <= str2 ? str1 : str2;
+}
+
+exports.maxStr = (str1, str2) => {
+  if(!str1)
+    return str2;
+  if(!str2)
+    return str1;
+  return str1 >= str2 ? str1 : str2;
+}
+
+
+
+exports.round = (val, d = 0) => {
+  if(d <= 0)
+    return Math.round(val);
+  let m = Math.pow(10, d);
+  return Math.round(val * m) / m;
+}
+
+exports.roundQty = (val) => {
+  return exports.round(val, 8);
+}
+
+exports.roundPrice = (val) => {
+  return exports.round(val, 8);
+}
+
+exports.roundAmt = (val) => {
+  return exports.round(val, 6);
+}
+
+
+
+exports.concatArrayUnique = (arr1, arr2) => {
+  let arr = [];
+  arr1.forEach(val => {
+    if(arr.indexOf(val) == -1)
+      arr.push(val);
+  });
+  arr2.forEach(val => {
+    if(arr.indexOf(val) == -1)
+      arr.push(val);
+  });
+  return arr;
+}
+
+
+
+exports.sortByEval = (sortOrder, a, b, i) => {
+  if(i == undefined) {
+    if(a != b)
+      return sortOrder.indexOf(a) < sortOrder.indexOf(b) ? -1 : 1;
+  } else {
+    if(a[i] != b[i])
+      return sortOrder.indexOf(a[i]) < sortOrder.indexOf(b[i]) ? -1 : 1;
+  }
+  return 0;
+}
+
+exports.sortByEvals = (a, b, i, iSortOrder, j, jSortOrder) => {
+  if(a[i] != b[i])
+    return iSortOrder.indexOf(a[i]) < iSortOrder.indexOf(b[i]) ? -1 : 1;
+  if(a[j] != b[j])
+    return jSortOrder.indexOf(a[j]) < jSortOrder.indexOf(b[j]) ? -1 : 1;
+  return 0;
+}
+
+exports.sortObject = (obj, deep = false) => {
+  return Object.keys(obj).sort().reduce((ret, key) => {
+    ret[key] = deep && (typeof obj[key] == 'object') && !(obj[key] instanceof Array) ? exports.sortObject(obj[key], deep) : obj[key];
+    return ret;
+  }, {});
+}
+
+exports.sortObjectByEval = (obj, sortOrder, deep = false) => {
+  return Object.keys(obj).sort((a, b) => exports.sortByEval(sortOrder, a, b)).reduce((ret, key) => {
+    ret[key] = deep && (typeof obj[key] == 'object') && !(obj[key] instanceof Array) ? exports.sortObjectByEval(obj[key], sortOrder, deep) : obj[key];
+    return ret;
+  }, {});
+}
+
+
+
+exports.roundObject = (obj, roundFn, cleanUp) => {
+  Object.keys(obj).forEach(key => {
+
+    if(typeof obj[key] == 'number') {
+      obj[key] = roundFn(obj[key]);
+      if(cleanUp && obj[key] == 0)
+        delete obj[key];
+
+    } else if(obj[key] == '') {
+      if(cleanUp)
+        delete obj[key];
+
+    } else if(typeof obj[key] == 'object') {
+      this.roundObject(obj[key], roundFn, cleanUp);
+      if(cleanUp && Object.keys(obj[key]).length == 0)
+        delete obj[key];
+      
+    } else {
+      // Do Nothing
+
+    }
+  
+  });
+  return obj;
+}
+
+exports.sumObject = (obj) => {
+  let sum = 0;
+  Object.keys(obj).forEach(key => {
+    if(typeof obj[key] == 'number')
+      sum += obj[key];
+    else if(typeof obj[key] == 'object')
+      sum += this.sumObject(obj[key]);
+    // else
+      // Do Nothing
+  });
+  return sum;
+}
+
+exports.addObjects = (obj1, obj2) => {
+  let obj = {};
+  let keys = this.concatArrayUnique(Object.keys(obj1), Object.keys(obj2));
+  keys.forEach(key => {
+    if(typeof obj1[key] == 'number' || typeof obj2[key] == 'number')
+      obj[key] = (obj1[key] || 0) + (obj2[key] || 0);
+    else if(typeof obj1[key] == 'string' || typeof obj2[key] == 'string')
+      obj[key] = (obj1[key] || '') == (obj2[key] || '') ? (obj1[key] || '') : (obj1[key] || '') + (obj2[key] || '');
+    else if(typeof obj1[key] == 'object' || typeof obj2[key] == 'object')
+      obj[key] = this.addObjects(obj1[key] || {}, obj2[key] || {});
+  });
+  return obj;
+}
+
+exports.subtractObjects = (obj1, obj2) => {
+  let obj = {};
+  let keys = this.concatArrayUnique(Object.keys(obj1), Object.keys(obj2));
+  keys.forEach(key => {
+    if(typeof obj1[key] == 'number' || typeof obj2[key] == 'number')
+      obj[key] = (obj1[key] || 0) - (obj2[key] || 0);
+    else if(typeof obj1[key] == 'string' || typeof obj2[key] == 'string')
+      obj[key] = (obj1[key] || '') == (obj2[key] || '') ? '' : (obj1[key] || '') + '-' + (obj2[key] || '');
+    else if(typeof obj1[key] == 'object' || typeof obj2[key] == 'object')
+      obj[key] = this.subtractObjects(obj1[key] || {}, obj2[key] || {});
+  });
+  return obj;
+}
+
+exports.groupObjectKeys = (obj, keyFn) => {
+  let ret = {};
+  Object.keys(obj).forEach(key => {
+    let newKey = keyFn(key);
+    if(typeof obj[key] == 'object')
+      ret[newKey] = exports.addObjects(ret[newKey] || {}, obj[key]);
+    else
+      ret[newKey] = (ret[newKey] || 0) + obj[key];
+  });
+  return ret;
+}
+
+
+
+exports.getValueInObject = (obj, ...keys) => {
+  for(let i = 0; i < keys.length; i++)
+    if((obj = obj[keys[i]]) === undefined)
+      return undefined;
+  return obj;
+}
+
+exports.addValueInObject = (val, obj, ...keys) => {
+  let i = 0;
+  for(; i < keys.length - 1; i++) {
+    obj[keys[i]] = obj[keys[i]] || {};
+    obj = obj[keys[i]];
+  }
+  obj[keys[i]] = (obj[keys[i]] || 0) + val;
+}
+
+exports.pushValueInObject = (val, obj, ...keys) => {
+  let i = 0;
+  for(; i < keys.length - 1; i++) {
+    obj[keys[i]] = obj[keys[i]] || {};
+    obj = obj[keys[i]];
+  }
+  obj[keys[i]] = obj[keys[i]] || [];
+  obj[keys[i]].push(val);
+}
+
+exports.fnObject = (obj, keys, fn, def, ...params) => {
+
+  let val = obj;
+  for(let i = 0; i < keys.length; i++) {
+    val = val[keys[i]];
+    if(val == undefined) {
+      val = def;
+      break;
+    }
+  }
+
+  let ret = fn(val, ...params);
+
+  if(ret) {
+    let i = 0;
+    for(; i < keys.length - 1; i++) {
+      obj[keys[i]] = obj[keys[i]] || {};
+      obj = obj[keys[i]];
+    }
+    obj[keys[i]] = ret;
+  }
+
+}
+
+exports.nestFnObject = async (obj, ...fns) => {
+  if(fns.length) {
+    let keys = Object.keys(obj);
+    for(let i = 0; i < keys.length; i++)
+      obj[keys[i]] = await fns[0](keys[i], await exports.nestFnObject(obj[keys[i]], ...fns.slice(1)));
+  }
+  return obj;
+}
+
+exports.nestSynFnObject = async (srcObj, dstObj, ...fns) => {
+  if(fns.length) {
+    let keys = Object.keys(srcObj);
+    for(let i = 0; i < keys.length; i++) {
+      let ret = await fns[0](keys[i], srcObj[keys[i]], await exports.nestSynFnObject(srcObj[keys[i]], dstObj ? dstObj[keys[i]] : undefined, ...fns.slice(1)));
+      if(!ret)
+        continue;
+      dstObj = dstObj || {};
+      dstObj[keys[i]] = ret;
+    }
+  }
+  return dstObj;
+}
+
+
+
+exports.transposeObject = (obj) => {
+  let trans = {};
+  Object.keys(obj).forEach(key1 => {
+    Object.keys(obj[key1]).forEach(key2 => {
+      trans[key2] = trans[key2] || {};
+      trans[key2][key1] = obj[key1][key2];
+    });
+  });
+  return trans;
+}
+
+exports.objectToArray = (obj, name = '-', totalCol, totalRow, sortColFn, sortRowFn, addFn, totalRowOnTop) => {
+
+  let heads = Object.keys(obj);
+  if(sortColFn)
+    heads.sort(sortColFn);
+
+  let rowMap = {};
+  heads.forEach((head, i) => {
+    Object.keys(obj[head]).forEach(key => {
+      if(!rowMap[key])
+        rowMap[key] = Array(heads.length).fill(0);
+      rowMap[key][i] = obj[head][key];
+    });
+  });
+
+  let table = [];
+  Object.entries(rowMap).forEach(entry => {
+    if(totalCol)
+      entry[1].push(entry[1].reduce(addFn ? (a,b) => addFn(a, b, entry[0]) : (a,b) => a + b, 0));
+    entry[1].unshift(entry[0]);
+    table.push(entry[1]);
+  });
+
+  if(sortRowFn)
+    table.sort(sortRowFn);
+
+  if(totalCol)
+    heads.push(totalCol);
+  heads.unshift(name);
+
+  if(totalRow) {
+    let totalArr = Array(heads.length).fill(0);
+    totalArr[0] = totalRow;
+    for(let i = 0; i < table.length; i++)
+      for(let j = 1; j < heads.length; j++)
+        totalArr[j] = addFn ? addFn(totalArr[j], table[i][j], heads[j]) : totalArr[j] + table[i][j];
+    if(totalRowOnTop)
+      table.unshift(totalArr);
+    else
+      table.push(totalArr);
+  }
+
+  table.unshift(heads);
+
+  return table;
+
+}
+
+
+
+exports.lru = (size) => { // TODO: Move to its own independent util
+
+  let queue = [];
+  let map = {};
+
+  return {
+
+    get: (key) => {
+      return map[key];
+    },
+
+    put: (key, val) => {
+
+      map[key] = val;
+
+      let i = queue.indexOf(key);
+      if(i != -1)
+        queue.splice(i, 1);
+      queue.unshift(key);
+
+      if(queue.length > size) {
+        key = queue.pop();
+        delete map[key];
+      }
+
+    }
+
+  }
+
+}
