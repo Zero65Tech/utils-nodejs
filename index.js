@@ -13,8 +13,4 @@ module.exports = {
 
   Firestore: require('./src/firestore.js'),
 
-  Market:    require('./src/market.js'),
-  Invest:    require('./src/invest.js'),
-  Script:    require('./src/script.js'),
-
 }
