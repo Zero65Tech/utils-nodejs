@@ -10,6 +10,10 @@ const auth = new GoogleAuth({
 });
 
 const SERVICES = {
+  "user": {
+    "test": { "host": "user.zero65.in", "prefix": "/api" },
+    "prod": { "host": "user-ci6dfndpjq-as.a.run.app" }
+  },
   "market": {
     "test": { "host": "market.zero65.in", "prefix": "/api" },
     "prod": { "host": "market-ci6dfndpjq-as.a.run.app" }
