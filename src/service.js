@@ -30,9 +30,17 @@ const SERVICES = {
     "test": { "host": "invest.zero65.in", "prefix": "/api" },
     "prod": { "host": "invest-ci6dfndpjq-as.a.run.app" }
   },
+  "invest-app": {
+    "test": { "host": "invest.zero65.in" },
+    "prod": { "host": "invest-app-ci6dfndpjq-as.a.run.app" }
+  },
   "paisa": {
     "test": { "host": "paisa.zero65.in", "prefix": "/api" },
     "prod": { "host": "paisa-ci6dfndpjq-as.a.run.app" }
+  },
+  "paisa-app": {
+    "test": { "host": "paisa.zero65.in" },
+    "prod": { "host": "paisa-app-ci6dfndpjq-as.a.run.app" }
   }
 };
 
