@@ -6,7 +6,6 @@
   "scripts": {},
   "author": "Zero65 Technologies Pvt. Ltd.",
   "dependencies": {
-    "@google-cloud/firestore": "^6.4.1",
     "chalk": "^4.1.2",
     "google-auth-library": "^8.7.0",
     "unzipper": "^0.10.11"

@@ -11,6 +11,4 @@ module.exports = {
   Log:       require('./src/log.js'),
   Service:   require('./src/service.js'),
 
-  Firestore: require('./src/firestore.js'),
-
 }
