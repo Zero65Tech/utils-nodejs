@@ -1,13 +1,12 @@
 {
   "name": "@zero65/utils",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "Nodejs Utils",
   "main": "index.js",
   "scripts": {},
   "author": "Zero65 Technologies Pvt. Ltd.",
   "dependencies": {
     "chalk": "^4.1.2",
-    "google-auth-library": "^8.7.0",
     "unzipper": "^0.10.11"
   }
 }

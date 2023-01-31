@@ -9,6 +9,5 @@ module.exports = {
   Http:      require('./src/http.js'),
 
   Log:       require('./src/log.js'),
-  Service:   require('./src/service.js'),
 
 }

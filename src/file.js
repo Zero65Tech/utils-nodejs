@@ -80,6 +80,10 @@ exports.writeJson = async (data, filePath) => {
 
     dataStr += 'null';
 
+  } else if(typeof data == 'boolean') {
+
+    dataStr += `${ data }`;
+
   } else if(typeof data == 'string') {
 
     dataStr += `"${ data }"`;
