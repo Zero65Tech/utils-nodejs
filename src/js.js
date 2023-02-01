@@ -323,7 +323,7 @@ exports.objectToTable = (obj, name = '-', totalColName, totalRowName, sortColFn,
 
   let rowNames = Object.keys(obj);
   if(sortRowFn)
-    colNames.sort(sortRowFn instanceof Array ? (a, b) => exports.sortByEval(sortRowFn, a, b) : sortRowFn);
+    rowNames.sort(sortRowFn instanceof Array ? (a, b) => exports.sortByEval(sortRowFn, a, b) : sortRowFn);
 
   // Appending Total Row
 
@@ -333,7 +333,7 @@ exports.objectToTable = (obj, name = '-', totalColName, totalRowName, sortColFn,
   }
 
   // Appending Total Column
-  
+
   if(totalColName) {
     if(!totalColFn)
       totalColFn = exports.sumObject;
@@ -345,7 +345,7 @@ exports.objectToTable = (obj, name = '-', totalColName, totalRowName, sortColFn,
 
   let table = [ [ name ].concat(colNames) ];
   for(let rowName of rowNames) {
-    let row = colNames.map(colName => obj[rowName][colName]);
+    let row = colNames.map(colName => obj[rowName][colName] || 0);
     row.unshift(rowName);
     table.push(row);
   }
