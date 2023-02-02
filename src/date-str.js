@@ -41,7 +41,7 @@ function days() {
   yesterday = exports.from(now - day);
   lastWeek  = exports.from(now - day * 7);
   setTimeout(days, day - (now + 5.5 * 60 * 60 * 1000) % day);
-}
+}; days();
 
 exports.tomorrow  = () => tomorrow;
 exports.today     = () => today;
@@ -50,23 +50,23 @@ exports.lastWeek  = () => lastWeek;
 
 
 
-exports.getFy = (dateStr = exports.today()) => {
+exports.getFy = (dateStr = today) => {
   return 'fy' + (parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 : 0));
 }
 
-exports.getFyMonth = (dateStr) => {
+exports.getFyMonth = (dateStr = today) => {
   return [ 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC' ][ dateStr.substring(5,7) - 1 ];
 }
 
-exports.getFyStart = (dateStr = exports.today()) => {
+exports.getFyStart = (dateStr = today) => {
   return 2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 0 : -1) + '-04-01';
 }
 
-exports.getFyEnd = (dateStr = exports.today()) => {
+exports.getFyEnd = (dateStr = today) => {
   return 2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 : 0) + '-03-31';
 }
 
-exports.getQtr = (dateStr = exports.today()) => {
+exports.getQtr = (dateStr = today) => {
   let md = dateStr.substring(5,10);
   if(md >= '10-01')
     return 'q3'
@@ -78,7 +78,7 @@ exports.getQtr = (dateStr = exports.today()) => {
     return 'q4'
 }
 
-exports.getTaxQtr = (dateStr = exports.today()) => {
+exports.getTaxQtr = (dateStr = today) => {
   let md = dateStr.substring(5,10);
   if(md >= '12-16')
     return 'q4'
@@ -94,7 +94,7 @@ exports.getTaxQtr = (dateStr = exports.today()) => {
     return 'q4'
 }
 
-exports.getFyDuration = (dateStr = exports.today()) => {
+exports.getFyDuration = (dateStr = today) => {
   return exports.getDuration(
     2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 0 : -1) + '-04-01',
     2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 :  0) + '-03-31'
