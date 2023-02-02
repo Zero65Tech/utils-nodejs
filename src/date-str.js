@@ -34,12 +34,13 @@ exports.getDuration = (startDate, endDate) => {
 let tomorrow, today, yesterday, lastWeek;
 
 function days() {
+  let now = Date.now();
   let day = 24 * 60 * 60 * 1000;
-  tomorrow  = exports.from(Date.now() + day);
-  today     = exports.from(Date.now());
-  yesterday = exports.from(Date.now() - day);
-  lastWeek  = exports.from(Date.now() - day * 7);
-  setTimeout(days, (Date.now() + 5.5 * 60 * 60 * 1000) % day - t);
+  tomorrow  = exports.from(now + day);
+  today     = exports.from(now);
+  yesterday = exports.from(now - day);
+  lastWeek  = exports.from(now - day * 7);
+  setTimeout(days, day - (now + 5.5 * 60 * 60 * 1000) % day);
 }
 
 exports.tomorrow  = () => tomorrow;
