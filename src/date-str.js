@@ -1,5 +1,7 @@
 exports.from = (date) => {
-  date = new Date(date.getTime() + 5.5 * 60 * 60 * 1000);
+  if(date instanceof Date)
+    date = date.getTime();
+  date = new Date(date + 5.5 * 60 * 60 * 1000);
   return date.getUTCFullYear()
     + ((date.getUTCMonth() < 9 ? '-0' : '-') + (date.getUTCMonth() + 1))
     + ((date.getUTCDate() < 10 ? '-0' : '-') + date.getUTCDate());
@@ -29,17 +31,21 @@ exports.getDuration = (startDate, endDate) => {
 
 
 
-exports.today = () => {
-  return exports.from(new Date());
+let tomorrow, today, yesterday, lastWeek;
+
+function days() {
+  let day = 24 * 60 * 60 * 1000;
+  tomorrow  = exports.from(Date.now() + day);
+  today     = exports.from(Date.now());
+  yesterday = exports.from(Date.now() - day);
+  lastWeek  = exports.from(Date.now() - day * 7);
+  setTimeout(days, (Date.now() + 5.5 * 60 * 60 * 1000) % day - t);
 }
 
-exports.yesterday = () => {
-  return exports.from(new Date(Date.now() - 24 * 60 * 60 * 1000));
-}
-
-exports.lastWeek = () => {
-  return exports.from(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
-}
+exports.tomorrow  = () => tomorrow;
+exports.today     = () => today;
+exports.yesterday = () => yesterday;
+exports.lastWeek  = () => lastWeek;
 
 
 
