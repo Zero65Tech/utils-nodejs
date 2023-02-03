@@ -70,25 +70,25 @@ exports.filter = (obj, key, filter) => {
   let entries = Object.entries(obj);
 
   if(typeof filter == 'function') {
-    if(key == 'head')
+    if(key == '__key')
       entries = entries.filter(entry => filter(entry[0]));
     else
       entries = entries.filter(entry => filter(entry[1][key]));
   
   } else if(filter instanceof Array) {
-    if(key == 'head')
+    if(key == '__key')
       entries = entries.filter(entry => filter.indexOf(entry[0]) != -1);
     else
       entries = entries.filter(entry => entry[1][key] ? filter.indexOf(entry[1][key]) != -1 : false);
   
   } else if(filter != undefined) {
-    if(key == 'head')
+    if(key == '__key')
       entries = entries.filter(entry => entry[0] == filter);
     else
       entries = entries.filter(entry => entry[1][key] == filter);
   
   } else {
-    if(key == 'head')
+    if(key == '__key')
       entries = entries;
     else
       entries = entries.filter(entry => entry[1][key] != undefined);
