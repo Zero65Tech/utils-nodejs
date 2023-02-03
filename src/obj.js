@@ -63,6 +63,47 @@ exports.update = (obj, keys, fn) => {
 
 }
 
+
+
+exports.filter = (obj, key, filter) => {
+  
+  let entries = Object.entries(obj);
+
+  if(typeof filter == 'function') {
+    if(key == 'head')
+      entries = entries.filter(entry => filter(entry[0]));
+    else
+      entries = entries.filter(entry => filter(entry[1][key]));
+  
+  } else if(filter instanceof Array) {
+    if(key == 'head')
+      entries = entries.filter(entry => filter.indexOf(entry[0]) != -1);
+    else
+      entries = entries.filter(entry => entry[1][key] ? filter.indexOf(entry[1][key]) != -1 : false);
+  
+  } else if(filter != undefined) {
+    if(key == 'head')
+      entries = entries.filter(entry => entry[0] == filter);
+    else
+      entries = entries.filter(entry => entry[1][key] == filter);
+  
+  } else {
+    if(key == 'head')
+      entries = entries;
+    else
+      entries = entries.filter(entry => entry[1][key] != undefined);
+  }
+
+  portfolio = {};
+  for(entry of entries)
+    portfolio[entry[0]] = entry[1];
+
+  return portfolio;
+
+}
+
+
+
 exports.itr = (obj, level, fn, ...vals) => {
   if(level) {
     if(typeof obj == 'object')
