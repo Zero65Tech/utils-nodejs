@@ -11,15 +11,15 @@ exports.from = (date) => {
 
 exports.shift = (date, days) => {
 
-  if(!date || !days)
+  if(!days)
     return date;
 
-  date = date.substring(0, 10) + ' GMT+530';
-  date = new Date(date).getTime() + days * 24 * 60 * 60 * 1000;
-  date = new Date(date);
-  date = exports.from(date);
+  if(date)
+    date = new Date(date.substring(0, 10) + ' GMT+530').getTime();
+  else
+    date = Date.now();
 
-  return date;
+  return exports.from(date + days * 24 * 60 * 60 * 1000);
 
 }
 
