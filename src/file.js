@@ -13,8 +13,26 @@ function ensureDir(filePath) {
 
 
 
-exports.readDir = async (dir) => {
-  return await fs.promises.readdir(dir);
+exports.readDir = async (dir, deep = false) => {
+
+  let paths = await fs.promises.readdir(dir);
+  paths = paths.filter(p => p != '.DS_Store');
+
+  if(deep) {
+    for(let i = 0; i < paths.length; i++) {
+      let stat = await fs.promises.lstat(dir + '/' + paths[i]);
+      if(stat.isDirectory()) {
+        let morePaths = await fs.promises.readdir(dir + '/' + paths[i]);
+        morePaths = morePaths.filter(p => p != '.DS_Store');
+        morePaths = morePaths.map(p => paths[i] + '/' + p);
+        paths.splice(i,1,...morePaths);
+        i--;
+      }
+    }
+  }
+
+  return paths;
+
 }
 
 
