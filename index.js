@@ -4,6 +4,7 @@ module.exports = {
   Obj:       require('./src/obj.js'),
   DtStr:     require('./src/date-str.js'),
   Format:    require('./src/format.js'),
+  Cache:     require('./src/cache.js'),
 
   File:      require('./src/file.js'),
   Http:      require('./src/http.js'),
