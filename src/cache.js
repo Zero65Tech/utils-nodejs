@@ -1,13 +1,13 @@
-exports.lru = (size) => {
+exports.lru = function(size) {
 
   let queue = [];
   let map = {};
 
-  self.get = (key) => {
+  this.get = (key) => {
     return map[key];
   };
 
-  self.put = (key, val) => {
+  this.put = (key, val) => {
 
     map[key] = val;
 
