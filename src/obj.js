@@ -65,6 +65,42 @@ exports.update = (obj, keys, fn) => {
 
 
 
+exports.clone = (obj) => {
+
+  if(obj instanceof Array) {
+
+    return obj.map(value => {
+      if(value === undefined || value === null
+          || typeof value == 'number' || typeof value == 'string'
+          || typeof value == 'function')
+        return value;
+      else
+        return exports.clone(value);
+    });
+
+  } else {
+
+    let clone = {};
+    for(let entry of Object.entries(obj)) {
+
+      let [ key, value ] = entry;
+
+      if(value === undefined || value === null
+          || typeof value == 'number' || typeof value == 'string'
+          || typeof value == 'function')
+        clone[key] = value;
+      else
+        clone[key] = exports.clone(value);
+
+    }
+    return clone;
+
+  }
+
+}
+
+
+
 exports.filter = (obj, key, filter) => {
   
   let entries = Object.entries(obj);

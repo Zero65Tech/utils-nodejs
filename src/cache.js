@@ -1,4 +1,8 @@
-exports.ttl = function(size, ttl = 5 * 60) {
+const Obj = require('./obj.js');
+
+
+
+exports.ttl = function(ttl = 5 * 60) {
 
   ttl = Math.max(ttl, 60);
 
@@ -6,13 +10,13 @@ exports.ttl = function(size, ttl = 5 * 60) {
   let map = {};
 
   this.get = (key) => {
-    return map[key].ttl < Date.now() ? map[key].value : null;
+    return map[key].ttl < Date.now() ? Obj.clone(map[key].value) : null;
   };
 
   this.put = (key, val) => {
     map[key] = {
       value: val,
-      expiry: Date.now() + ttl * 1000
+      expiry: Math.ceil(Date.now() / (ttl * 1000)) * ttl * 1000
     };
   };
 
@@ -31,7 +35,7 @@ exports.lru = function(size) {
   let map = {};
 
   this.get = (key) => {
-    return map[key] || null;
+    return Obj.clone(map[key]) || null;
   };
 
   this.put = (key, val) => {
