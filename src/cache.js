@@ -4,15 +4,13 @@ const Obj = require('./obj.js');
 
 exports.ttl = function(ttl = 5 * 60) {
 
-  ttl = Math.max(ttl, 60);
-
-  let queue = [];
   let map = {};
+  ttl = Math.max(ttl, 60);
 
   this.get = (key) => {
 
     let obj = map[key];
-    if(obj === undefined || obj.ttl < Date.now())
+    if(obj === undefined)
       return undefined;
 
     let val = obj.value;
@@ -38,10 +36,10 @@ exports.ttl = function(ttl = 5 * 60) {
 
   setInterval(() => {
     Object.entries(map).forEach(entry => {
-      if(entry[1].ttl < Date.now())
+      if(entry[1].expiry < Date.now())
         delete map[entry[0]];
     });
-  }, ttl * 1000);
+  }, 60 * 1000);
 
 }
 
