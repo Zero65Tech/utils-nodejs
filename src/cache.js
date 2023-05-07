@@ -10,14 +10,30 @@ exports.ttl = function(ttl = 5 * 60) {
   let map = {};
 
   this.get = (key) => {
-    return map[key].ttl < Date.now() ? Obj.clone(map[key].value) : null;
+
+    let obj = map[key];
+    if(obj === undefined || obj.ttl < Date.now())
+      return undefined;
+
+    let val = obj.value;
+    if(val === null)
+      return null;
+    if(typeof val == 'object')
+      return Obj.clone(val);
+    return val;
+
   };
 
   this.put = (key, val) => {
+
+    if(val === undefined)
+      return;
+
     map[key] = {
       value: val,
       expiry: Math.ceil(Date.now() / (ttl * 1000)) * ttl * 1000
     };
+
   };
 
   setInterval(() => {
@@ -35,10 +51,20 @@ exports.lru = function(size) {
   let map = {};
 
   this.get = (key) => {
-    return Obj.clone(map[key]) || null;
+    let val = map[key];
+    if(val === undefined)
+      return undefined;
+    if(val === null)
+      return null;
+    if(typeof val == 'object')
+      return Obj.clone(val);
+    return val;
   };
 
   this.put = (key, val) => {
+
+    if(val === undefined)
+      return;
 
     map[key] = val;
 
