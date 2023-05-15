@@ -27,6 +27,9 @@ exports.ttl = function(ttl = 5 * 60) {
     if(val === undefined)
       return;
 
+    if(val !== null && typeof val == 'object')
+      val = Obj.clone(val);
+
     map[key] = {
       value: val,
       expiry: Math.ceil(Date.now() / (ttl * 1000)) * ttl * 1000
