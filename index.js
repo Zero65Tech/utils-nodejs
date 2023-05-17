@@ -10,5 +10,6 @@ module.exports = {
   Http:      require('./src/http.js'),
 
   Log:       require('./src/log.js'),
+  LogV2:     require('./src/log-v2.js'),
 
 }
