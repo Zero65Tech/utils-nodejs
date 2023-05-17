@@ -25,29 +25,29 @@ module.exports = function(name) {
     
   }
 
-  self.space: (count = 1) => {
+  self.space = (count = 1) => {
     for( ; space < count; space++)
       process.stdout.write('\n');
   }
 
-  self.progress: (data) => {
+  self.progress = (data) => {
     if(process.env.ENV == 'test')
       log(data, 0, 0);
   }
 
-  self.info: (data, spaceBefore, spaceAfter) => {
+  self.info = (data, spaceBefore, spaceAfter) => {
     log(chalk.gray(data) + '\n', spaceBefore, spaceAfter);
   }
 
-  self.notice: (data, spaceBefore, spaceAfter) => {
+  self.notice = (data, spaceBefore, spaceAfter) => {
     log(data + '\n', spaceBefore, spaceAfter);
   }
 
-  self.warn: (data, spaceBefore, spaceAfter) => {
+  self.warn = (data, spaceBefore, spaceAfter) => {
     log(chalk.yellow(data) + '\n', spaceBefore, spaceAfter);
   }
 
-  self.error: (data, spaceBefore, spaceAfter) => {
+  self.error = (data, spaceBefore, spaceAfter) => {
     log(chalk.red(data) + '\n', spaceBefore, spaceAfter);
   }
 

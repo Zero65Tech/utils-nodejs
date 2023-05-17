@@ -1,6 +1,6 @@
 {
   "name": "@zero65/utils",
-  "version": "3.2.7",
+  "version": "3.2.8",
   "description": "Nodejs Utils",
   "main": "index.js",
   "scripts": {},
