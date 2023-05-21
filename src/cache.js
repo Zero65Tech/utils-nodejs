@@ -37,6 +37,10 @@ exports.ttl = function(ttl = 5 * 60) {
 
   };
 
+  this.delete = (key) => {
+    delete map[key];
+  };
+
   setInterval(() => {
     Object.entries(map).forEach(entry => {
       if(entry[1].expiry < Date.now())
@@ -67,7 +71,7 @@ exports.lru = function(size) {
     if(val === undefined)
       return;
 
-    map[key] = val;
+    map[key] = Obj.clone(val);
 
     let i = queue.indexOf(key);
     if(i == -1) {

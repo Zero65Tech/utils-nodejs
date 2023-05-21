@@ -1,21 +1,3 @@
-exports.minStr = (str1, str2) => {
-  if(!str1)
-    return str2;
-  if(!str2)
-    return str1;
-  return str1 <= str2 ? str1 : str2;
-}
-
-exports.maxStr = (str1, str2) => {
-  if(!str1)
-    return str2;
-  if(!str2)
-    return str1;
-  return str1 >= str2 ? str1 : str2;
-}
-
-
-
 exports.round = (val, d = 0) => {
   if(d <= 0)
     return Math.round(val);
@@ -23,16 +5,53 @@ exports.round = (val, d = 0) => {
   return Math.round(val * m) / m;
 }
 
+// TODO: Deprecate
 exports.roundQty = (val) => {
   return exports.round(val, 8);
 }
 
+// TODO: Deprecate
 exports.roundPrice = (val) => {
   return exports.round(val, 8);
 }
 
+// TODO: Deprecate
 exports.roundAmt = (val) => {
   return exports.round(val, 6);
+}
+
+
+
+exports.minStr = (str1, str2) => {
+
+  if(str1 === undefined)
+    return str2;
+  if(str2 === undefined)
+    return str1;
+
+  if(str1 === null)
+    return str2;
+  if(str2 === null)
+    return str1;
+
+  return str1 <= str2 ? str1 : str2;
+
+}
+
+exports.maxStr = (str1, str2) => {
+
+  if(str1 === undefined)
+    return str2;
+  if(str2 === undefined)
+    return str1;
+
+  if(str1 === null)
+    return str2;
+  if(str2 === null)
+    return str1;
+
+  return str1 >= str2 ? str1 : str2;
+
 }
 
 
@@ -52,6 +71,13 @@ exports.concatArrayUnique = (arr1, arr2) => {
 
 
 
+exports.sortByOrderFn = (a, b, sortOrder) => {
+  if(a == b)
+    return 0;  
+  return sortOrder.indexOf(a) < sortOrder.indexOf(b) ? -1 : 1;
+}
+
+// TODO: Deprecate. Use sortByOrderFn.
 exports.sortByEval = (sortOrder, a, b, i) => {
   if(i == undefined) {
     if(a != b)

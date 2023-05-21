@@ -65,6 +65,25 @@ exports.update = (obj, keys, fn) => {
 
 
 
+exports.sort = (obj, sortOrder) => {
+
+  let keys = Object.keys(obj);
+
+  if(sortOrder)
+    keys.sort((a, b) => Js.sortByOrderFn(a, b, sortOrder));
+  else
+    keys.sort;
+
+  let ret = {};
+  for(let key of keys)
+    ret[key] = obj[key];
+
+  return ret;
+
+}
+
+
+
 exports.clone = (obj) => {
 
   if(obj instanceof Array) {
