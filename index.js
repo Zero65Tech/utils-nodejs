@@ -1,6 +1,7 @@
 module.exports = {
 
   Js:        require('./src/js.js'),
+  Arr:       require('./src/arr.js'),
   Obj:       require('./src/obj.js'),
   DtStr:     require('./src/date-str.js'),
   Format:    require('./src/format.js'),

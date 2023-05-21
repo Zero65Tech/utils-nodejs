@@ -72,7 +72,7 @@ exports.sort = (obj, sortOrder) => {
   if(sortOrder)
     keys.sort((a, b) => Js.sortByOrderFn(a, b, sortOrder));
   else
-    keys.sort;
+    keys.sort();
 
   let ret = {};
   for(let key of keys)
