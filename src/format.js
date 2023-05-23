@@ -5,7 +5,7 @@ exports.length = (val, length, char = ' ') => {
   return val;
 };
 
-exports.currency = (amount, d = 0) => {
+exports.currency = (amount, d = 2) => {
   let f = exports.number(Math.abs(amount), d);
   if(f === null)
     return null;
