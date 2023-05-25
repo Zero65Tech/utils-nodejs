@@ -11,6 +11,13 @@ exports.toString = (arr) => {
   
 }
 
+exports.toObj = (arr, heads) => {
+  let obj = {};
+  for(let i = 0; i < heads.length; i++)
+    obj[heads[i]] = arr[i];
+  return obj;
+}
+
 exports.pushUnique = (arr, item) => {
   if(arr.indexOf(item) == -1)
     arr.push(item);
