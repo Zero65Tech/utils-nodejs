@@ -51,6 +51,20 @@ exports.push = (obj, keys, val) => {
 
 }
 
+exports.pushUnique = (obj, keys, val) => {
+
+  let i = 0;
+  for( ; i < keys.length - 1; i++) {
+    obj[keys[i]] = obj[keys[i]] || {};
+    obj = obj[keys[i]];
+  }
+
+  obj[keys[i]] = obj[keys[i]] || [];
+  if(obj[keys[i]].indexOf(val) == -1)
+    obj[keys[i]].push(val);
+
+}
+
 exports.update = (obj, keys, fn) => {
 
   let i = 0;
