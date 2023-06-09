@@ -1,12 +1,10 @@
 const chalk = require('chalk');
 
-
+var space = 0;
 
 module.exports = function(name) {
 
   let self = this;
-
-  let space = 0;
 
   function log(data, spaceBefore = 0, spaceAfter = 0) {
 
@@ -26,8 +24,15 @@ module.exports = function(name) {
   }
 
   self.space = (count = 1) => {
+
+    if(process.stdout.clearLine) {
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
+    }
+
     for( ; space < count; space++)
       process.stdout.write('\n');
+
   }
 
   self.progress = (data) => {

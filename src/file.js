@@ -71,24 +71,30 @@ exports.write = async (data, filePath) => {
   await fs.promises.writeFile(filePath, data);
 }
 
-exports.writeToFile = exports.write;
-
 exports.writeObject = async (data, filePath) => {
   ensureDir(filePath);
   await fs.promises.writeFile(filePath, JSON.stringify(data, null, 2));
 }
 
-exports.writeObjectToFile = exports.writeObject;
-
 exports.writeArray = async (data, filePath) => {
-  ensureDir(filePath);
-  let dataStr = '[\n';
-  data.forEach((d, i) => { dataStr += '  ' + JSON.stringify(d) + (i == data.length - 1 ? '\n' : ',\n') });
-  dataStr += ']';
-  await fs.promises.writeFile(filePath, dataStr);
-}
 
-exports.writeArrayToFile = exports.writeArray;
+  let dataStr = [];
+
+  for(let item of data) {
+    if(typeof item == 'object' && item instanceof Array)
+      dataStr.push(await exports.writeArray(item));
+    else
+      dataStr.push(JSON.stringify(item));
+  }
+
+  if(!filePath)
+    return '[ ' + dataStr.join(', ') + ' ]';
+
+  ensureDir(filePath);
+
+  await fs.promises.writeFile(filePath, '[\n  ' + dataStr.join(',\n  ') + '\n]');
+
+}
 
 exports.writeJson = async (data, filePath) => {
   
@@ -108,7 +114,7 @@ exports.writeJson = async (data, filePath) => {
 
   } else if(typeof data == 'number') {
 
-    dataStr += `${data}`;
+    dataStr += `${ data }`;
 
   } else if(data instanceof Array) {
 
