@@ -104,7 +104,9 @@ exports.clone = (obj) => {
 
     return obj.map(value => {
       if(value === undefined || value === null
-          || typeof value == 'number' || typeof value == 'string'
+          || typeof value == 'boolean'
+          || typeof value == 'number'
+          || typeof value == 'string'
           || typeof value == 'function')
         return value;
       else
@@ -114,17 +116,15 @@ exports.clone = (obj) => {
   } else {
 
     let clone = {};
-    for(let entry of Object.entries(obj)) {
-
-      let [ key, value ] = entry;
-
+    for(let [ key, value ] of Object.entries(obj)) {
       if(value === undefined || value === null
-          || typeof value == 'number' || typeof value == 'string'
+          || typeof value == 'boolean'
+          || typeof value == 'number'
+          || typeof value == 'string'
           || typeof value == 'function')
         clone[key] = value;
       else
         clone[key] = exports.clone(value);
-
     }
     return clone;
 
