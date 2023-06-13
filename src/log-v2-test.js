@@ -8,10 +8,8 @@ module.exports = function(name) {
 
   function log(data, spaceBefore = 0, spaceAfter = 0) {
 
-    if(process.stdout.clearLine) {
-      process.stdout.clearLine();
-      process.stdout.cursorTo(0);
-    }
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
 
     for( ; space < spaceBefore; space++)
       process.stdout.write('\n');
@@ -25,10 +23,8 @@ module.exports = function(name) {
 
   self.space = (count = 1) => {
 
-    if(process.stdout.clearLine) {
-      process.stdout.clearLine();
-      process.stdout.cursorTo(0);
-    }
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
 
     for( ; space < count; space++)
       process.stdout.write('\n');
@@ -36,8 +32,7 @@ module.exports = function(name) {
   }
 
   self.progress = (data) => {
-    if(process.env.ENV == 'test')
-      log(data, 0, 0);
+    log(data, 0, 0);
   }
 
   self.info = (data, spaceBefore, spaceAfter) => {
