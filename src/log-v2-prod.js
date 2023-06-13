@@ -18,14 +18,14 @@ module.exports = function(name) {
     else
       console.log(JSON.stringify({
         severity,
-        message : data,
+        message : name + ': ' + data,
         "@type" : "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
         serviceContext: { service: process.env.K_SERVICE, version: process.env.K_REVISION, resourceType: 'cloud_run_revision' }
       }));
   }
 
-  self.info   = (data) => console.log(JSON.stringify({ message: data, severity: 'INFO'    }));
-  self.notice = (data) => console.log(JSON.stringify({ message: data, severity: 'NOTICE'  }));
+  self.info   = (data) => console.log(JSON.stringify({ message: name + ': ' + data, severity: 'INFO'   }));
+  self.notice = (data) => console.log(JSON.stringify({ message: name + ': ' + data, severity: 'NOTICE' }));
 
   self.warn   = (data) => log('WARNING', data);
   self.error  = (data) => log('ERROR',   data);
