@@ -8,24 +8,17 @@ module.exports = function(name) {
   self.space    = () => {};
   self.progress = () => {};
 
-  function log(severity, data) {
-    // if(typeof data == 'object' && data instanceof 'Error')
-    //   console.log(JSON.stringify({
-    //     severity,
-    //     message     : data.message,
-    //     stack_trace : data.stack
-    //   }));
-    // else
-      console.log(JSON.stringify({
-        severity,
-        message : `${ data } (${ name })`,
-        "@type" : "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-        serviceContext: { service: process.env.K_SERVICE, version: process.env.K_REVISION, resourceType: 'cloud_run_revision' }
-      }));
-  }
-
   self.info   = (data) => console.log(JSON.stringify({ message: `${ data } (${ name })`, severity: 'INFO'   }));
   self.notice = (data) => console.log(JSON.stringify({ message: `${ data } (${ name })`, severity: 'NOTICE' }));
+
+  function log(severity, data) {
+    console.log(JSON.stringify({
+      severity,
+      message : `${ data } (${ name })`,
+      "@type" : "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
+      serviceContext: { service: process.env.K_SERVICE, version: process.env.K_REVISION, resourceType: 'cloud_run_revision' }
+    }));
+  }
 
   self.warn   = (data) => log('WARNING', data);
   self.error  = (data) => log('ERROR',   data);

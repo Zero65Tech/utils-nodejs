@@ -10,7 +10,6 @@ module.exports = {
   File   : require('./src/file.js'),
   Http   : require('./src/http.js'),
 
-  Log    : require('./src/log.js'),
   LogV2  : process.env.ENV == 'test' ? require('./src/log-v2-test.js') : require('./src/log-v2-prod.js'),
 
 }
