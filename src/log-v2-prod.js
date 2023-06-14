@@ -9,13 +9,13 @@ module.exports = function(name) {
   self.progress = () => {};
 
   function log(severity, data) {
-    if(typeof data == 'object' && data instanceof 'Error')
-      console.log(JSON.stringify({
-        severity,
-        message     : data.message,
-        stack_trace : data.stack
-      }));
-    else
+    // if(typeof data == 'object' && data instanceof 'Error')
+    //   console.log(JSON.stringify({
+    //     severity,
+    //     message     : data.message,
+    //     stack_trace : data.stack
+    //   }));
+    // else
       console.log(JSON.stringify({
         severity,
         message : `${ data } (${ name })`,
