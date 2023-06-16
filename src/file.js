@@ -98,78 +98,51 @@ exports.writeArray = async (data, filePath) => {
 
 exports.writeJson = async (data, filePath) => {
   
-  let dataStr = '';
+  if(typeof data != 'object') {
 
-  if(data == null) {
-
-    dataStr += 'null';
-
-  } else if(typeof data == 'boolean') {
-
-    dataStr += `${ data }`;
-
-  } else if(typeof data == 'string') {
-
-    dataStr += `"${ data }"`;
-
-  } else if(typeof data == 'number') {
-
-    dataStr += `${ data }`;
+    data = JSON.stringify(data);
 
   } else if(data instanceof Array) {
 
-    let multi = false;
-    for(let val of data) {
-      if(typeof val == 'object') {
-        multi = true;
-        break;
+    let multiLine = false;
+    let strArr = [];
+    for(let item of data) {
+      if(typeof item == 'object' && item !== null) {
+        multiLine = true;
+        strArr.push((await exports.writeJson(item)).replace(/\n/g, '\n  '));
+      } else {
+        strArr.push(JSON.stringify(item));
       }
     }
 
-    if(multi) {
+    if(multiLine)
+      data = '[\n  ' + strArr.join(',\n  ') + '\n]';
+    else
+      data = '[ ' + strArr.join(', ') + ' ]';
 
-      dataStr += '[\n';
-      for(let i = 0; i < data.length; i++) {
-        dataStr += `  ${ (await exports.writeJson(data[i])).replace(/\n/g, '\n  ') }`;
-        if(i != data.length - 1)
-          dataStr += ',\n'
-      }
-      dataStr += '\n]';
+  } else {
 
-    } else {
-
-      dataStr += '[ ';
-      for(let i = 0; i < data.length; i++) {
-        dataStr += await exports.writeJson(data[i]);
-        if(i != data.length - 1)
-          dataStr += ', '
-      }
-      dataStr += ' ]';
-
+    let strArr = [];
+    for(let [ key, value ] of Object.entries(data)) {
+      if(typeof value == 'object' && value !== null)
+        strArr.push(`"${ key }": ${ (await exports.writeJson(value)).replace(/\n/g, '\n  ') }`);
+      else
+        strArr.push(`"${ key }": ${ JSON.stringify(value) }`);
     }
 
-  } else { // if(typeof data === 'object') {
-
-    let lastKey = Object.keys(data).pop();
-
-    dataStr += '{\n';
-
-    for(let key in data) {
-      dataStr += `  "${key}": ${ (await exports.writeJson(data[key])).replace(/\n/g, '\n  ') }`;
-      if(key != lastKey)
-        dataStr += ',\n';
-    }
-
-    dataStr += '\n}';
+    if(strArr.length)
+      data = '{\n  ' + strArr.join(',\n  ') + '\n}';
+    else
+      data = '{ }';
 
   }
 
   if(!filePath)
-    return dataStr;
+    return data;
 
   ensureDir(filePath);
 
-  await fs.promises.writeFile(filePath, dataStr);
+  await fs.promises.writeFile(filePath, data);
 
 }
 
