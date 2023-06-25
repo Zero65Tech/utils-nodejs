@@ -71,7 +71,10 @@ exports.lru = function(size) {
     if(val === undefined)
       return;
 
-    map[key] = Obj.clone(val);
+    if(val !== null && typeof val == 'object')
+      val = Obj.clone(val);
+    
+    map[key] = val;
 
     let i = queue.indexOf(key);
     if(i == -1) {
