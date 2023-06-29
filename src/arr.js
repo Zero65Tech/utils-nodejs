@@ -40,3 +40,10 @@ exports.sortByKeys = (arr, keys) => {
     return 0;
   });
 }
+
+exports.transpose = (arr) => {
+  let transpose = [];
+  for(let i = 0; i < arr[0].length; i++)
+    transpose[i] = arr.map(item => item[i]);
+  return transpose;
+}
