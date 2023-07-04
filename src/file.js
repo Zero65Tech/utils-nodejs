@@ -66,6 +66,18 @@ exports.readFileAsJson = exports.readAsJson;
 
 
 
+exports.pipe = async (data, filePath) => {
+  ensureDir(filePath);
+  await new Promise((resolve, reject) => {
+    let file = fs.createWriteStream(filePath);
+    file.on('error', reject);
+    file.on('finish', resolve);
+    data.pipe(filePath);
+  });
+}
+
+
+
 exports.write = async (data, filePath) => {
   ensureDir(filePath);
   await fs.promises.writeFile(filePath, data);
