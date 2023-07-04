@@ -72,7 +72,7 @@ exports.pipe = async (data, filePath) => {
     let file = fs.createWriteStream(filePath);
     file.on('error', reject);
     file.on('finish', resolve);
-    data.pipe(filePath);
+    data.pipe(file);
   });
 }
 
