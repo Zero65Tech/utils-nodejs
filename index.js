@@ -10,6 +10,8 @@ module.exports = {
   File   : require('./src/file.js'),
   Http   : require('./src/http.js'),
 
-  LogV2  : process.env.ENV == 'test' ? require('./src/log-v2-test.js') : require('./src/log-v2-prod.js'),
+  LogV2  : process.env.ENV == 'test'
+      ? require('./src/log-v2-chalk.js')
+      : (process.env.PROJECT ? require('./src/log-v2-gcp.js') : require('./src/log-v2.js')),
 
 }
