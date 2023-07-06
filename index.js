@@ -8,7 +8,7 @@ module.exports = {
   Cache  : require('./src/cache.js'),
 
   File   : require('./src/file.js'),
-  Http   : require('./src/http.js'),
+  Http   : require('./src/http.js'), // Deprecated
 
   LogV2  : process.env.ENV == 'test'
       ? require('./src/log-v2-chalk.js')

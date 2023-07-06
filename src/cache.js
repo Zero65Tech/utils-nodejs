@@ -2,6 +2,18 @@ const Obj = require('./obj.js');
 
 
 
+exports.cachefy = (fn, cache, keyFn) => {
+  return async (...args) => {
+    let key = keyFn(...args);
+    let ret = cache.get(key);
+    if(!ret) {
+      ret = await fn(...args);
+      cache.put(key, ret);
+    }
+    return ret;
+  }
+}
+
 exports.ttl = function(ttl = 5 * 60) {
 
   let map = {};

@@ -1,4 +1,4 @@
-exports.length = (val, length, char = ' ') => {
+exports.length = (val, length, char = ' ') => { // Deprecated
   val = val + '';
   while(val.length < length)
     val = char + val;
