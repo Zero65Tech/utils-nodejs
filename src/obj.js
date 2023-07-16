@@ -79,6 +79,23 @@ exports.update = (obj, keys, fn) => {
 
 
 
+exports.round = (obj, roundFn) => {
+  Object.keys(obj).forEach(key => {
+
+    if(typeof obj[key] == 'number') {
+      obj[key] = roundFn(obj[key]);
+
+    } else if(typeof obj[key] == 'object') {
+      this.round(obj[key], roundFn);
+      
+    } else {
+      // Do Nothing
+
+    }
+  
+  });
+}
+
 exports.sort = (obj, sortOrder) => {
 
   let keys = Object.keys(obj);
