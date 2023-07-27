@@ -89,6 +89,7 @@ exports.sortByEval = (sortOrder, a, b, i) => {
   return 0;
 }
 
+// TODO: Deprecate
 exports.sortByEvals = (a, b, i, iSortOrder, j, jSortOrder) => {
   if(a[i] != b[i])
     return iSortOrder.indexOf(a[i]) < iSortOrder.indexOf(b[i]) ? -1 : 1;
@@ -97,6 +98,7 @@ exports.sortByEvals = (a, b, i, iSortOrder, j, jSortOrder) => {
   return 0;
 }
 
+// TODO: Deprecate
 exports.sortObject = (obj, deep = false) => {
   return Object.keys(obj).sort().reduce((ret, key) => {
     ret[key] = deep && (typeof obj[key] == 'object') && !(obj[key] instanceof Array) ? exports.sortObject(obj[key], deep) : obj[key];
@@ -104,6 +106,7 @@ exports.sortObject = (obj, deep = false) => {
   }, {});
 }
 
+// TODO: Deprecate
 exports.sortObjectByEval = (obj, sortOrder, deep = false) => {
   return Object.keys(obj).sort((a, b) => exports.sortByEval(sortOrder, a, b)).reduce((ret, key) => {
     ret[key] = deep && (typeof obj[key] == 'object') && !(obj[key] instanceof Array) ? exports.sortObjectByEval(obj[key], sortOrder, deep) : obj[key];
@@ -113,6 +116,7 @@ exports.sortObjectByEval = (obj, sortOrder, deep = false) => {
 
 
 
+// TODO: Deprecate
 exports.roundObject = (obj, roundFn, cleanUp) => {
   Object.keys(obj).forEach(key => {
 
@@ -168,15 +172,35 @@ exports.addObjects = (obj1, obj2) => {
 
 exports.subtractObjects = (obj1, obj2) => {
   let obj = {};
-  let keys = this.concatArrayUnique(Object.keys(obj1), Object.keys(obj2));
-  keys.forEach(key => {
-    if(typeof obj1[key] == 'number' || typeof obj2[key] == 'number')
-      obj[key] = (obj1[key] || 0) - (obj2[key] || 0);
-    else if(typeof obj1[key] == 'string' || typeof obj2[key] == 'string')
-      obj[key] = (obj1[key] || '') == (obj2[key] || '') ? '' : (obj1[key] || '') + '-' + (obj2[key] || '');
-    else if(typeof obj1[key] == 'object' || typeof obj2[key] == 'object')
-      obj[key] = this.subtractObjects(obj1[key] || {}, obj2[key] || {});
-  });
+  for(let key of this.concatArrayUnique(Object.keys(obj1), Object.keys(obj2))) {
+
+    if(obj1[key] == null) {
+
+      if(typeof obj2[key] == 'number')
+        obj[key] = -obj2[key];
+
+      else if(typeof obj2[key] == 'object')
+        this.subtractObjects({}, obj2[key]);
+
+    } else if(obj2[key] == null) {
+
+      if(typeof obj1[key] == 'number')
+        obj[key] = obj1[key];
+
+      else if(typeof obj1[key] == 'object')
+        this.subtractObjects(obj1[key], {});
+
+    } else if(typeof obj1[key] == 'number' && typeof obj2[key] == 'number') {
+
+      obj[key] = obj1[key] - obj2[key];
+
+    } else if(typeof obj1[key] == 'object' && typeof obj2[key] == 'object') {
+
+      obj[key] = this.subtractObjects(obj1[key], obj2[key]);
+      
+    }
+
+  }
   return obj;
 }
 
@@ -194,6 +218,7 @@ exports.groupObjectKeys = (obj, keyFn) => {
 
 
 
+// TODO: Deprecate
 exports.getValueInObject = (obj, ...keys) => {
   for(let i = 0; i < keys.length; i++)
     if((obj = obj[keys[i]]) === undefined)
@@ -201,6 +226,7 @@ exports.getValueInObject = (obj, ...keys) => {
   return obj;
 }
 
+// TODO: Deprecate
 exports.addValueInObject = (val, obj, ...keys) => {
   let i = 0;
   for(; i < keys.length - 1; i++) {
@@ -210,6 +236,7 @@ exports.addValueInObject = (val, obj, ...keys) => {
   obj[keys[i]] = (obj[keys[i]] || 0) + val;
 }
 
+// TODO: Deprecate
 exports.pushValueInObject = (val, obj, ...keys) => {
   let i = 0;
   for(; i < keys.length - 1; i++) {
@@ -220,6 +247,7 @@ exports.pushValueInObject = (val, obj, ...keys) => {
   obj[keys[i]].push(val);
 }
 
+// TODO: Deprecate
 exports.fnObject = (obj, keys, fn, def, ...params) => {
 
   let val = obj;
@@ -244,6 +272,7 @@ exports.fnObject = (obj, keys, fn, def, ...params) => {
 
 }
 
+// TODO: Deprecate
 exports.nestFnObject = async (obj, ...fns) => {
   if(fns.length) {
     let keys = Object.keys(obj);
@@ -253,6 +282,7 @@ exports.nestFnObject = async (obj, ...fns) => {
   return obj;
 }
 
+// TODO: Deprecate
 exports.nestSynFnObject = async (srcObj, dstObj, ...fns) => {
   if(fns.length) {
     let keys = Object.keys(srcObj);
@@ -382,7 +412,8 @@ exports.objectToTable = (obj, name = '-', totalColName, totalRowName, sortColFn,
 
 
 
-exports.lru = (size) => { // TODO: Move to its own independent util
+// TODO: Deprecate
+exports.lru = (size) => {
 
   let queue = [];
   let map = {};
