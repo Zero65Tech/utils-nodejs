@@ -113,6 +113,27 @@ exports.sort = (obj, sortOrder) => {
 
 }
 
+exports.sortDeep = (obj, ...sortOrders) => {
+
+  let sortOrder = sortOrders[0];
+  if(sortOrder === undefined)
+    return obj;
+
+  let keys = Object.keys(obj);
+
+  if(sortOrder === null)
+    keys.sort();
+  else
+    keys.sort((a, b) => Js.sortByOrderFn(a, b, sortOrder));
+
+  let ret = {};
+  for(let key of keys)
+    ret[key] = exports.sortDeep(obj[key], ...sortOrders.slice(1));
+
+  return ret;
+
+}
+
 
 
 exports.clone = (obj) => {
