@@ -180,7 +180,7 @@ exports.subtractObjects = (obj1, obj2) => {
         obj[key] = -obj2[key];
 
       else if(typeof obj2[key] == 'object')
-        this.subtractObjects({}, obj2[key]);
+        obj[key] = this.subtractObjects({}, obj2[key]);
 
     } else if(obj2[key] == null) {
 
@@ -188,7 +188,7 @@ exports.subtractObjects = (obj1, obj2) => {
         obj[key] = obj1[key];
 
       else if(typeof obj1[key] == 'object')
-        this.subtractObjects(obj1[key], {});
+        obj[key] = this.subtractObjects(obj1[key], {});
 
     } else if(typeof obj1[key] == 'number' && typeof obj2[key] == 'number') {
 
