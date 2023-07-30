@@ -112,7 +112,10 @@ exports.writeJson = async (data, filePath) => {
   
   if(typeof data != 'object') {
 
-    data = JSON.stringify(data);
+    if(typeof data == 'number' && Number.isNaN(data))
+      data = '"NaN"';
+    else
+      data = JSON.stringify(data);
 
   } else if(data instanceof Array) {
 
@@ -122,6 +125,8 @@ exports.writeJson = async (data, filePath) => {
       if(typeof item == 'object' && item !== null) {
         multiLine = true;
         strArr.push((await exports.writeJson(item)).replace(/\n/g, '\n  '));
+      } else if(typeof item == 'number' && Number.isNaN(item)) {
+        strArr.push('"NaN');
       } else {
         strArr.push(JSON.stringify(item));
       }
@@ -138,6 +143,8 @@ exports.writeJson = async (data, filePath) => {
     for(let [ key, value ] of Object.entries(data)) {
       if(typeof value == 'object' && value !== null)
         strArr.push(`"${ key }": ${ (await exports.writeJson(value)).replace(/\n/g, '\n  ') }`);
+      else if(typeof value == 'number' && Number.isNaN(value))
+        strArr.push(`"${ key }": "NaN"`);
       else
         strArr.push(`"${ key }": ${ JSON.stringify(value) }`);
     }

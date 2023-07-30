@@ -24,8 +24,8 @@ exports.shift = (date, days) => {
 }
 
 exports.getDuration = (startDate, endDate) => {
-  var dtStart = (startDate ? new Date(startDate.substring(0, 10) + ' GMT+530') : new Date()).getTime() + 5.5 * 60 * 60 * 1000;
-  var dtEnd   = (endDate   ? new Date(  endDate.substring(0, 10) + ' GMT+530') : new Date()).getTime() + 5.5 * 60 * 60 * 1000;
+  let dtStart = (startDate ? new Date(startDate.substring(0, 10) + ' GMT+530') : new Date()).getTime() + 5.5 * 60 * 60 * 1000;
+  let dtEnd   = (endDate   ? new Date(  endDate.substring(0, 10) + ' GMT+530') : new Date()).getTime() + 5.5 * 60 * 60 * 1000;
   return Math.floor(dtEnd / 1000 / 60 / 60 / 24) - Math.floor(dtStart / 1000 / 60 / 60 / 24);
 }
 

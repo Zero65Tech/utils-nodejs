@@ -182,6 +182,9 @@ exports.subtractObjects = (obj1, obj2) => {
       else if(typeof obj2[key] == 'object')
         obj[key] = this.subtractObjects({}, obj2[key]);
 
+      else
+        obj[key] = NaN;
+
     } else if(obj2[key] == null) {
 
       if(typeof obj1[key] == 'number')
@@ -189,6 +192,9 @@ exports.subtractObjects = (obj1, obj2) => {
 
       else if(typeof obj1[key] == 'object')
         obj[key] = this.subtractObjects(obj1[key], {});
+
+      else
+        obj[key] = NaN;
 
     } else if(typeof obj1[key] == 'number' && typeof obj2[key] == 'number') {
 
@@ -198,6 +204,10 @@ exports.subtractObjects = (obj1, obj2) => {
 
       obj[key] = this.subtractObjects(obj1[key], obj2[key]);
       
+    } else {
+
+      obj[key] = NaN;
+
     }
 
   }
