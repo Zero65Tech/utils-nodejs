@@ -79,6 +79,31 @@ exports.update = (obj, keys, fn) => {
 
 
 
+exports.clean = (obj) => {
+  for(let [ key, value ] of Object.entries(obj)) {
+
+    if(typeof value != 'object') {
+
+      if(value === undefined || value === null || value === '' || value === 0)
+        delete obj[key];
+
+    } else if(value instanceof Array) {
+
+      if(value.length == 0)
+        delete obj[key];
+
+    } else {
+
+      this.clean(obj[key]);
+
+      if(Object.keys(value).length == 0)
+        delete obj[key];
+
+    }
+
+  }
+}
+
 exports.round = (obj, roundFn) => {
   Object.keys(obj).forEach(key => {
 
