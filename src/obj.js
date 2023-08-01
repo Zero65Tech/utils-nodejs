@@ -77,6 +77,20 @@ exports.update = (obj, keys, fn) => {
 
 }
 
+exports.delete = (obj, keys) => {
+
+  let last = keys.pop();
+
+  for(let key of keys) {
+    if(!obj[key])
+      return;
+    obj = obj[key];
+  }
+
+  delete obj[last];
+
+}
+
 
 
 exports.clean = (obj) => {
@@ -141,19 +155,21 @@ exports.sort = (obj, sortOrder) => {
 exports.sortDeep = (obj, ...sortOrders) => {
 
   let sortOrder = sortOrders[0];
-  if(sortOrder === undefined)
-    return obj;
+  sortOrders = sortOrders.slice(1);
 
   let keys = Object.keys(obj);
-
-  if(sortOrder === null)
+  if(sortOrder == null)
     keys.sort();
   else
     keys.sort((a, b) => Js.sortByOrderFn(a, b, sortOrder));
 
   let ret = {};
-  for(let key of keys)
-    ret[key] = exports.sortDeep(obj[key], ...sortOrders.slice(1));
+  for(let key of keys) {
+    if(typeof obj[key] == 'object' && sortOrders.length)
+      ret[key] = exports.sortDeep(obj[key], ...sortOrders);
+    else
+      ret[key] = obj[key];
+  }
 
   return ret;
 
