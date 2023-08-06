@@ -2,6 +2,44 @@ const Js = require('./js.js');
 
 
 
+exports.toTable = (obj, sortRow, sortCol) => {
+
+  let rowNames = Object.keys(obj);
+  obj = this.transpose(obj);
+  let colNames = Object.keys(obj);
+
+  if(typeof sortRow == 'function') {
+    rowNames.sort(sortRow);
+  } else if(typeof sortRow == 'object' && sortRow instanceof Array) {
+    rowNames.sort((a, b) => Js.sortByOrderFn(a, b, sortRow));
+  }
+
+  if(typeof sortCol == 'function') {
+    colNames.sort(sortCol);
+  } else if(typeof sortCol == 'object' && sortCol instanceof Array) {
+    colNames.sort((a, b) => Js.sortByOrderFn(a, b, sortCol));
+  }
+
+  let rows = rowNames.map(rowName => Array(colNames.length).fill(null));
+
+  for(let i = 0; i < rowNames.length; i++) {
+    let rowName = rowNames[i];
+    for(let j = 0; j < colNames.length; j++) {
+      let colName = colNames[j];
+      if(obj[colName] && typeof obj[colName][rowName] == 'number')
+        rows[i][j] = (rows[i][j] || 0) + obj[colName][rowName];
+    }
+    rows[i].unshift(rowName);
+  }
+
+  colNames.unshift(null);
+  rows.unshift(colNames);
+  return rows;
+
+}
+
+
+
 exports.get = (obj, keys) => {
 
   for(let i = 0; obj && i < keys.length; i++)
@@ -176,6 +214,17 @@ exports.sortDeep = (obj, ...sortOrders) => {
 }
 
 
+
+exports.transpose = (obj) => {
+  let trans = {};
+  for(let key1 in obj) {
+    for(let key2 in obj[key1]) {
+      trans[key2] = trans[key2] || {};
+      trans[key2][key1] = obj[key1][key2];
+    }
+  }
+  return trans;
+}
 
 exports.clone = (obj) => {
 
