@@ -6,9 +6,10 @@ exports.length = (val, length, char = ' ') => { // Deprecated
 };
 
 exports.camelize = (str) => {
-  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-    return index === 0 ? word.toLowerCase() : word.toUpperCase();
-  }).replace(/\s+/g, '');
+  const words = str.split(' ');
+  for(let i = 0; i < words.length; i++)
+    words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+  return words.join('');
 }
 
 exports.currency = (amount, d = 2) => {
