@@ -59,11 +59,11 @@ exports.getFyMonth = (dateStr = today) => {
 }
 
 exports.getFyStart = (dateStr = today) => {
-  return 2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 0 : -1) + '-04-01';
+  return parseInt(dateStr.substring(0,4)) + (dateStr.substring(5,10) >= '04-01' ? 0 : -1) + '-04-01';
 }
 
 exports.getFyEnd = (dateStr = today) => {
-  return 2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 : 0) + '-03-31';
+  return parseInt(dateStr.substring(0,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 : 0) + '-03-31';
 }
 
 exports.getQtr = (dateStr = today) => {

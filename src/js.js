@@ -145,14 +145,14 @@ exports.roundObject = (obj, roundFn, cleanUp) => {
 
 exports.sumObject = (obj) => {
   let sum = 0;
-  Object.keys(obj).forEach(key => {
-    if(typeof obj[key] == 'number')
-      sum += obj[key];
-    else if(typeof obj[key] == 'object')
-      sum += this.sumObject(obj[key]);
+  for(let value of Object.values(obj)) {
+    if(typeof value == 'number')
+      sum += value;
+    else if(typeof value == 'object')
+      sum += this.sumObject(value);
     // else
       // Do Nothing
-  });
+  }
   return sum;
 }
 
