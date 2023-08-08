@@ -20,15 +20,12 @@ exports.toTable = (obj, sortRow, sortCol) => {
     colNames.sort((a, b) => Js.sortByOrderFn(a, b, sortCol));
   }
 
-  let rows = rowNames.map(rowName => Array(colNames.length).fill(null));
-
+  let rows = [];
   for(let i = 0; i < rowNames.length; i++) {
-    let rowName = rowNames[i];
-    for(let j = 0; j < colNames.length; j++) {
-      let colName = colNames[j];
-      rows[i][j] = obj[colName][rowName];
-    }
-    rows[i].unshift(rowName);
+    rows[i] = [];
+    for(let j = 0; j < colNames.length; j++)
+      rows[i][j] = obj[colNames[j]][rowNames[i]];
+    rows[i].unshift(rowNames[i]);
   }
 
   colNames.unshift(null);
