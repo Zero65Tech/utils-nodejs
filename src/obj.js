@@ -26,8 +26,7 @@ exports.toTable = (obj, sortRow, sortCol) => {
     let rowName = rowNames[i];
     for(let j = 0; j < colNames.length; j++) {
       let colName = colNames[j];
-      if(obj[colName] && typeof obj[colName][rowName] == 'number')
-        rows[i][j] = (rows[i][j] || 0) + obj[colName][rowName];
+      rows[i][j] = obj[colName][rowName];
     }
     rows[i].unshift(rowName);
   }
