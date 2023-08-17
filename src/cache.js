@@ -14,7 +14,7 @@ exports.cachefy = (fn, cache, keyFn) => {
   }
 }
 
-exports.ttl = function(ttl = 5 * 60) {
+exports.ttl = function(ttl = 5 * 60, clone = true) {
 
   let map = {};
   ttl = Math.max(ttl, 60);
@@ -25,11 +25,14 @@ exports.ttl = function(ttl = 5 * 60) {
     if(obj === undefined)
       return undefined;
 
+    if(obj.expiry < Date.now())
+      return undefined;
+
     let val = obj.value;
-    if(val === null)
-      return null;
-    if(typeof val == 'object')
+
+    if(clone && val !== null && typeof val == 'object')
       return Obj.clone(val);
+
     return val;
 
   };
@@ -39,12 +42,12 @@ exports.ttl = function(ttl = 5 * 60) {
     if(val === undefined)
       return;
 
-    if(val !== null && typeof val == 'object')
+    if(clone && val !== null && typeof val == 'object')
       val = Obj.clone(val);
 
     map[key] = {
       value: val,
-      expiry: Math.ceil(Date.now() / (ttl * 1000)) * ttl * 1000
+      expiry: Date.now() + Math.round(ttl * (1.05 - 0.1 * Math.random()) * 1000)
     };
 
   };
@@ -62,20 +65,23 @@ exports.ttl = function(ttl = 5 * 60) {
 
 }
 
-exports.lru = function(size) {
+exports.lru = function(size, clone = true) {
 
   let queue = [];
   let map = {};
 
   this.get = (key) => {
+
     let val = map[key];
+
     if(val === undefined)
       return undefined;
-    if(val === null)
-      return null;
-    if(typeof val == 'object')
+
+    if(clone && val !== null && typeof val == 'object')
       return Obj.clone(val);
+
     return val;
+
   };
 
   this.put = (key, val) => {
@@ -83,7 +89,7 @@ exports.lru = function(size) {
     if(val === undefined)
       return;
 
-    if(val !== null && typeof val == 'object')
+    if(clone && val !== null && typeof val == 'object')
       val = Obj.clone(val);
     
     map[key] = val;
