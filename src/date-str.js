@@ -100,3 +100,19 @@ exports.getFyDuration = (dateStr = today) => {
     2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 :  0) + '-03-31'
   ) + 1;
 }
+
+exports.getWeekStart = (dateStr) => {
+  // console.log(dateStr)
+  const date = new Date(dateStr);
+  date.setMinutes(date.getMinutes() + 330);
+  const dayOfWeek = date.getUTCDay();
+  const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  date.setUTCDate(date.getUTCDate() - diff);
+  date.setMinutes(date.getMinutes() - 330);
+  return exports.from(date);
+}
+
+exports.getUniqueWeekId = (dateStr) => {
+  const weekStart = exports.getWeekStart(dateStr);
+  return `${weekStart}-Week`;
+}
