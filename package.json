@@ -3,10 +3,15 @@
   "version": "3.5.22",
   "description": "Nodejs Utils",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "jest"
+  },
   "author": "Zero65 Technologies Pvt. Ltd.",
   "dependencies": {
     "chalk": "^4.1.2",
     "unzipper": "^0.10.11"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
