@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Zero65Tech/indian-stock-market"
+    "url": "https://github.com/Zero65Tech/utils-nodejs"
   },
   "keywords": [
     "zero65",
@@ -35,10 +35,7 @@
     "parserOptions": {
       "ecmaVersion": "latest"
     },
-    "rules": {
-      "no-constant-condition": "warn",
-      "no-useless-escape": "warn"
-    }
+    "rules": {}
   },
   "publishConfig": {
     "access": "public"
