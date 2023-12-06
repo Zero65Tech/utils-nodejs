@@ -100,3 +100,13 @@ exports.getFyDuration = (dateStr = today) => {
     2000 + parseInt(dateStr.substring(2,4)) + (dateStr.substring(5,10) >= '04-01' ? 1 :  0) + '-03-31'
   ) + 1;
 }
+
+exports.getPreviousSunday = (dateStr) => {
+  const date = new Date(dateStr);
+  date.setMinutes(date.getMinutes() + 330);
+  const dayOfWeek = date.getUTCDay();
+  const diff = dayOfWeek === 0 ? 7 : dayOfWeek;
+  date.setUTCDate(date.getUTCDate() - diff);
+  date.setMinutes(date.getMinutes() - 330);
+  return exports.from(date);
+}
